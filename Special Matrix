@@ -1,0 +1,15 @@
+function [A] = specialMatrix(n,m)
+A = zeros(n,m);
+if nargin ~= 2
+    error('wrong number of imputs')
+else
+    A(1,:) = 1:m;
+    A(:,1) = 1:n;
+    
+for c = 2:n;
+    for h = 2:m
+    A(c,h) = A((c-1),h) + A(c , (h-1))
+    end
+end
+end
+end
