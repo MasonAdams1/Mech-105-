@@ -1,1 +1,38 @@
+function [L, U, P] = luFactor(A)
+% luFactor(A)
+%	LU decomposition with pivotiing
+% inputs:
+%	A = coefficient matrix
+% outputs:
+%	L = lower triangular matrix
+%	U = upper triangular matrix
+%       P = the permutation matrix
+R=length(A);
+U=A;
+L=zeros(R,R);
+PV=(0:R-1)';
+for w=1:R,
+    
+% Pivot attempt 
+[~,ind]=max(abs(U(w:R,w)));
+ind=ind+(w-1);
+t=PV(w); 
+PV(w)=PV(ind);
+PV(ind)=t;
+t=L(w,1:w-1);
+L(w,1:w-1)=L(ind,1:w-1);
+L(ind,1:w-1)=t;
+t=U(w,w:end); 
+U(w,w:end)=U(ind,w:end)
+; U(ind,w:end)=t;
+L(w,w)=1;
+for i=(1+w):size(U,1)
+c= U(i,w)/U(w,w);
+U(i,w:R)=U(i,w:R)-U(w,w:R)*c;
+L(i,w)=c;
+end
+end
+P=zeros(R,R);
+P(PV(:)*R+(1:R)')=1;
 
+end
